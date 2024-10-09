@@ -55,12 +55,17 @@ class Board:
 
         return new_board
 
+    @property
+    def possible_positions(self):
+        return list(zip(*(self.state == "").nonzero()))
+
+    @property
     def possible_moves(self):
-        I, J = (self.state == "").nonzero()
+        i, j = (self.state == "").nonzero()
         return list(zip(
-            ALPHABET.repeat(I.size),
-            np.tile(I, 26),
-            np.tile(J, 26),
+            ALPHABET.repeat(i.size),
+            np.tile(i, 26),
+            np.tile(j, 26),
         ))
 
     def copy(self):
@@ -133,7 +138,11 @@ class Board:
         for i in range(5):
             out += "-" * 31 + "\n"
             out += "|  " + "  |  ".join([" "] * 5) + "  |\n"
-            out += "|  " + "  |  ".join([" " if x == "" else x for x in self.state[i]]) + "  |\n"
+            out += (
+                "|  "
+                + "  |  ".join([" " if x == "" else x for x in self.state[i]])
+                + "  |\n"
+            )
             out += "|  " + "  |  ".join([" "] * 5) + "  |\n"
 
         out += "-" * 31 + "\n"
